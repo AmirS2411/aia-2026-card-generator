@@ -25,6 +25,7 @@
             color: #0a2240;
             margin-top: 0;
             text-align: center;
+            margin-bottom: 10px;
         }
         .form-group {
             margin-bottom: 20px;
@@ -92,16 +93,23 @@
 <body>
 
 <div class="container">
-    <h1>AIA 2026 Card Generator</h1>
+    <img src="https://aviationinsurance.org/wp-content/uploads/2023/10/AIA-Logo-2024-Transparent.png" alt="AIA Logo" class="logo-preview" onerror="this.style.display='none'">
+    <h1>Create Your AIA 2026 Card</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 25px;">Ready for Dallas? Generate your custom LinkedIn badge and let everyone know you'll be at AIA 2026! ✈️</p>
     
     <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" placeholder="Enter your full name" maxlength="30">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="e.g. Amir Shneider" maxlength="30">
     </div>
 
     <div class="form-group">
         <label for="title">Your Title</label>
-        <input type="text" id="title" placeholder="Enter your professional title" maxlength="40">
+        <input type="text" id="title" placeholder="e.g. CMO" maxlength="40">
+    </div>
+
+    <div class="form-group">
+        <label for="company">Company Name</label>
+        <input type="text" id="company" placeholder="e.g. Skywatch" maxlength="40">
     </div>
 
     <div class="form-group">
@@ -109,8 +117,8 @@
         <input type="file" id="photo" accept="image/*">
     </div>
 
-    <button id="generateBtn" class="btn">Generate LinkedIn Image</button>
-    <button id="downloadBtn" class="btn" style="display: none; background-color: #10b981;">Download Image</button>
+    <button id="generateBtn" class="btn">Generate My Badge</button>
+    <button id="downloadBtn" class="btn" style="display: none; background-color: #10b981;">Download & Share on LinkedIn</button>
 
     <div class="preview-container">
         <div id="placeholder" class="placeholder-canvas">Your generated image will appear here</div>
@@ -126,6 +134,7 @@
     const photoInput = document.getElementById('photo');
     const nameInput = document.getElementById('name');
     const titleInput = document.getElementById('title');
+    const companyInput = document.getElementById('company');
     const placeholder = document.getElementById('placeholder');
 
     const templateImg = new Image();
@@ -134,8 +143,8 @@
     // Coordinates from analysis
     const COORDS = {
         circle: { x: 706, y: 568, r: 224 },
-        name: { x: 706, y: 840 },
-        title: { x: 706, y: 889 }
+        name: { x: 706, y: 835 },
+        details: { x: 706, y: 885 }
     };
 
     generateBtn.addEventListener('click', () => {
@@ -190,10 +199,11 @@
         ctx.textBaseline = 'middle';
         ctx.fillText(nameInput.value.toUpperCase() || 'YOUR NAME', COORDS.name.x, COORDS.name.y);
 
-        // 5. Draw Title
+        // 5. Draw Title & Company
+        const subtext = `${titleInput.value}${titleInput.value && companyInput.value ? ' @ ' : ''}${companyInput.value}`;
         ctx.fillStyle = '#6ca9d6'; // Light blue from analysis
         ctx.font = '28px Montserrat, sans-serif';
-        ctx.fillText(titleInput.value.toUpperCase() || 'YOUR TITLE', COORDS.title.x, COORDS.title.y);
+        ctx.fillText(subtext.toUpperCase() || 'YOUR TITLE @ COMPANY', COORDS.details.x, COORDS.details.y);
 
         // Show canvas, hide placeholder
         canvas.style.display = 'block';
