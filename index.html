@@ -135,8 +135,7 @@
     const COORDS = {
         circle: { x: 706, y: 568, r: 224 },
         name: { x: 706, y: 840 },
-        title: { x: 706, y: 889 },
-        bgPatch: { x: 500, y: 800, w: 412, h: 120 } // Area to cover existing text
+        title: { x: 706, y: 889 }
     };
 
     generateBtn.addEventListener('click', () => {
@@ -160,12 +159,7 @@
         // 1. Draw Template
         ctx.drawImage(templateImg, 0, 0);
 
-        // 2. Patch existing text (cover "YOUR NAME" and "YOUR TITLE")
-        // We use a color sampled from the background (dark navy)
-        ctx.fillStyle = '#0a2240';
-        ctx.fillRect(COORDS.bgPatch.x, COORDS.bgPatch.y, COORDS.bgPatch.w, COORDS.bgPatch.h);
-
-        // 3. Draw User Photo (Clipped Circle)
+        // 2. Draw User Photo (Clipped Circle)
         ctx.save();
         ctx.beginPath();
         ctx.arc(COORDS.circle.x, COORDS.circle.y, COORDS.circle.r, 0, Math.PI * 2);
@@ -182,21 +176,21 @@
         ctx.drawImage(userImg, x, y, userImg.width * scale, userImg.height * scale);
         ctx.restore();
 
-        // 4. Draw White Border around Circle
+        // 3. Draw White Border around Circle
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 12;
         ctx.beginPath();
         ctx.arc(COORDS.circle.x, COORDS.circle.y, COORDS.circle.r, 0, Math.PI * 2);
         ctx.stroke();
 
-        // 5. Draw Name
+        // 4. Draw Name
         ctx.fillStyle = 'white';
         ctx.font = 'bold 44px Montserrat, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(nameInput.value.toUpperCase() || 'YOUR NAME', COORDS.name.x, COORDS.name.y);
 
-        // 6. Draw Title
+        // 5. Draw Title
         ctx.fillStyle = '#6ca9d6'; // Light blue from analysis
         ctx.font = '28px Montserrat, sans-serif';
         ctx.fillText(titleInput.value.toUpperCase() || 'YOUR TITLE', COORDS.title.x, COORDS.title.y);
