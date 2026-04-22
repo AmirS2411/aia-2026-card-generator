@@ -50,7 +50,7 @@
             box-sizing: border-box;
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 16px; /* Prevents auto-zoom on iOS */
+            font-size: 16px;
         }
         input[type="text"]::placeholder {
             color: rgba(255, 255, 255, 0.5);
@@ -95,16 +95,6 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
-        .btn:active {
-            transform: translateY(0);
-        }
-        .btn-download {
-            background-color: #10b981;
-        }
-        .btn-download:hover {
-            background-color: #059669;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-        }
         .logo-preview {
             display: block;
             margin: 0 auto 20px;
@@ -144,12 +134,11 @@
     </div>
 
     <button id="generateBtn" class="btn">Generate My Badge</button>
-    <button id="downloadBtn" class="btn btn-download" style="display: none;">Download & Share on LinkedIn</button>
 
     <div class="preview-container">
         <div id="placeholder" class="placeholder-canvas">Your generated image will appear here</div>
         <div id="resultContainer" style="display: none;">
-            <p style="font-size: 0.9em; color: #aaa; margin-bottom: 10px;">👇 Long-press the image to save on mobile</p>
+            <p style="font-size: 1.1em; font-weight: bold; color: #10b981; margin-bottom: 15px; background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px;">👆 Long-press the image to save it!</p>
             <img id="resultImage" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
         </div>
         <canvas id="canvas" width="1254" height="1254" style="display: none;"></canvas>
@@ -160,7 +149,6 @@
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const generateBtn = document.getElementById('generateBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
     const photoInput = document.getElementById('photo');
     const nameInput = document.getElementById('name');
     const titleInput = document.getElementById('title');
@@ -172,7 +160,6 @@
     const templateImg = new Image();
     templateImg.src = 'template.jpg';
 
-    // Coordinates from analysis
     const COORDS = {
         circle: { x: 920, y: 750, r: 210 },
         name: { x: 920, y: 1000 },
@@ -197,25 +184,21 @@
     });
 
     function render(userImg) {
-        // 1. Draw Template
         ctx.drawImage(templateImg, 0, 0);
 
-        // 2. Draw User Photo (Clipped Circle)
         ctx.save();
         ctx.beginPath();
         ctx.arc(COORDS.circle.x, COORDS.circle.y, COORDS.circle.r, 0, Math.PI * 2);
         ctx.closePath();
         ctx.clip();
 
-        // Calculate scaling for cover effect
         const diameter = COORDS.circle.r * 2;
         const scale = Math.max(diameter / userImg.width, diameter / userImg.height);
         const drawWidth = userImg.width * scale;
         const drawHeight = userImg.height * scale;
 
-        // Calculate offsets to center (with slight upward bias for faces)
         const offsetX = (diameter - drawWidth) / 2;
-        const faceBias = 0.1; // 10% upward nudge
+        const faceBias = 0.1;
         const offsetY = (diameter - drawHeight) * (0.5 - faceBias);
 
         ctx.drawImage(
@@ -227,43 +210,27 @@
         );
         ctx.restore();
 
-        // 3. Draw White Border around Circle
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 12;
         ctx.beginPath();
         ctx.arc(COORDS.circle.x, COORDS.circle.y, COORDS.circle.r, 0, Math.PI * 2);
         ctx.stroke();
 
-        // 4. Draw Name
         ctx.fillStyle = 'white';
         ctx.font = 'bold 44px Montserrat, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(nameInput.value.toUpperCase() || 'YOUR NAME', COORDS.name.x, COORDS.name.y);
 
-        // 5. Draw Title & Company
         const subtext = `${titleInput.value}${titleInput.value && companyInput.value ? ' @ ' : ''}${companyInput.value}`;
-        ctx.fillStyle = '#6ca9d6'; // Light blue from analysis
+        ctx.fillStyle = '#6ca9d6';
         ctx.font = 'bold 36px Montserrat, sans-serif';
         ctx.fillText(subtext.toUpperCase() || 'YOUR TITLE @ COMPANY', COORDS.details.x, COORDS.details.y);
 
-        // Convert canvas to image for better mobile saving
         resultImage.src = canvas.toDataURL('image/png');
-        
-        // Show result, hide placeholder
         resultContainer.style.display = 'block';
         placeholder.style.display = 'none';
-        downloadBtn.style.display = 'block';
     }
-
-    downloadBtn.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.download = `AIA2026_${nameInput.value.replace(/\s+/g, '_') || 'Attendee'}.png`;
-        link.href = canvas.toDataURL('image/png');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
 </script>
 
 </body>
