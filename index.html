@@ -238,7 +238,7 @@
         // 5. Draw Title & Company
         const subtext = `${titleInput.value}${titleInput.value && companyInput.value ? ' @ ' : ''}${companyInput.value}`;
         ctx.fillStyle = '#6ca9d6'; // Light blue from analysis
-        ctx.font = '28px Montserrat, sans-serif';
+        ctx.font = 'bold 36px Montserrat, sans-serif';
         ctx.fillText(subtext.toUpperCase() || 'YOUR TITLE @ COMPANY', COORDS.details.x, COORDS.details.y);
 
         // Show canvas, hide placeholder
