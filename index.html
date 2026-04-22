@@ -244,10 +244,32 @@
         ctx.textBaseline = 'middle';
         ctx.fillText(nameInput.value.toUpperCase() || 'YOUR NAME', COORDS.name.x, COORDS.name.y);
 
-        const subtext = `${titleInput.value}${titleInput.value && companyInput.value ? ' @ ' : ''}${companyInput.value}`;
+        // 5. Draw Title & Company (with wrapping)
+        const subtext = (`${titleInput.value}${titleInput.value && companyInput.value ? ' @ ' : ''}${companyInput.value}` || 'YOUR TITLE @ COMPANY').toUpperCase();
         ctx.fillStyle = '#6ca9d6';
-        ctx.font = 'bold 36px Montserrat, sans-serif';
-        ctx.fillText(subtext.toUpperCase() || 'YOUR TITLE @ COMPANY', COORDS.details.x, COORDS.details.y);
+        ctx.font = 'bold 34px Montserrat, sans-serif';
+        ctx.textAlign = 'center';
+        
+        const maxWidth = 550;
+        const lineHeight = 42;
+        const words = subtext.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            let testLine = currentLine + " " + words[i];
+            if (ctx.measureText(testLine).width > maxWidth) {
+                lines.push(currentLine);
+                currentLine = words[i];
+            } else {
+                currentLine = testLine;
+            }
+        }
+        lines.push(currentLine);
+
+        lines.forEach((line, index) => {
+            ctx.fillText(line, COORDS.details.x, COORDS.details.y + (index * lineHeight));
+        });
 
         resultImage.src = canvas.toDataURL('image/png');
         resultContainer.style.display = 'block';
