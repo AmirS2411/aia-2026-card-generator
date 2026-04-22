@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AIA 2026 Card Generator</title>
     <style>
         body {
@@ -50,6 +50,7 @@
             box-sizing: border-box;
             background: rgba(255, 255, 255, 0.1);
             color: white;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
         }
         input[type="text"]::placeholder {
             color: rgba(255, 255, 255, 0.5);
