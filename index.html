@@ -7,25 +7,31 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            background: url('bg-landing.jpg') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
+            min-height: 100vh;
+            color: white;
         }
         .container {
-            background: white;
+            background: rgba(10, 34, 64, 0.85);
+            backdrop-filter: blur(10px);
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             max-width: 600px;
             width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         h1 {
-            color: #0a2240;
+            color: #ffffff;
             margin-top: 0;
             text-align: center;
             margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         .form-group {
             margin-bottom: 20px;
@@ -34,14 +40,19 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #333;
+            color: #e0e0e0;
         }
         input[type="text"], input[type="file"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
             box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
         .preview-container {
             margin-top: 30px;
@@ -50,43 +61,57 @@
         canvas {
             max-width: 100%;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             display: none;
         }
         .placeholder-canvas {
             width: 100%;
             aspect-ratio: 1;
-            background: #eee;
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #888;
-            border: 2px dashed #ccc;
+            color: #aaa;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
             border-radius: 8px;
         }
         .btn {
             background-color: #3b82f6;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 14px 24px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .btn:hover {
             background-color: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
-        .btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+        .btn:active {
+            transform: translateY(0);
+        }
+        .btn-download {
+            background-color: #10b981;
+        }
+        .btn-download:hover {
+            background-color: #059669;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
         .logo-preview {
             display: block;
             margin: 0 auto 20px;
-            height: 60px;
+            height: 70px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        p {
+            color: #ccc !important;
         }
     </style>
 </head>
@@ -118,7 +143,7 @@
     </div>
 
     <button id="generateBtn" class="btn">Generate My Badge</button>
-    <button id="downloadBtn" class="btn" style="display: none; background-color: #10b981;">Download & Share on LinkedIn</button>
+    <button id="downloadBtn" class="btn btn-download" style="display: none;">Download & Share on LinkedIn</button>
 
     <div class="preview-container">
         <div id="placeholder" class="placeholder-canvas">Your generated image will appear here</div>
