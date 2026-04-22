@@ -148,7 +148,11 @@
 
     <div class="preview-container">
         <div id="placeholder" class="placeholder-canvas">Your generated image will appear here</div>
-        <canvas id="canvas" width="1254" height="1254"></canvas>
+        <div id="resultContainer" style="display: none;">
+            <p style="font-size: 0.9em; color: #aaa; margin-bottom: 10px;">👇 Long-press the image to save on mobile</p>
+            <img id="resultImage" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        </div>
+        <canvas id="canvas" width="1254" height="1254" style="display: none;"></canvas>
     </div>
 </div>
 
@@ -162,6 +166,8 @@
     const titleInput = document.getElementById('title');
     const companyInput = document.getElementById('company');
     const placeholder = document.getElementById('placeholder');
+    const resultContainer = document.getElementById('resultContainer');
+    const resultImage = document.getElementById('resultImage');
 
     const templateImg = new Image();
     templateImg.src = 'template.jpg';
@@ -241,8 +247,11 @@
         ctx.font = 'bold 36px Montserrat, sans-serif';
         ctx.fillText(subtext.toUpperCase() || 'YOUR TITLE @ COMPANY', COORDS.details.x, COORDS.details.y);
 
-        // Show canvas, hide placeholder
-        canvas.style.display = 'block';
+        // Convert canvas to image for better mobile saving
+        resultImage.src = canvas.toDataURL('image/png');
+        
+        // Show result, hide placeholder
+        resultContainer.style.display = 'block';
         placeholder.style.display = 'none';
         downloadBtn.style.display = 'block';
     }
@@ -251,7 +260,9 @@
         const link = document.createElement('a');
         link.download = `AIA2026_${nameInput.value.replace(/\s+/g, '_') || 'Attendee'}.png`;
         link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
     });
 </script>
 
