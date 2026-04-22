@@ -176,13 +176,23 @@
         ctx.clip();
 
         // Calculate scaling for cover effect
-        const scale = Math.max(
-            (COORDS.circle.r * 2) / userImg.width,
-            (COORDS.circle.r * 2) / userImg.height
+        const diameter = COORDS.circle.r * 2;
+        const scale = Math.max(diameter / userImg.width, diameter / userImg.height);
+        const drawWidth = userImg.width * scale;
+        const drawHeight = userImg.height * scale;
+
+        // Calculate offsets to center (with slight upward bias for faces)
+        const offsetX = (diameter - drawWidth) / 2;
+        const faceBias = 0.1; // 10% upward nudge
+        const offsetY = (diameter - drawHeight) * (0.5 - faceBias);
+
+        ctx.drawImage(
+            userImg, 
+            COORDS.circle.x - COORDS.circle.r + offsetX, 
+            COORDS.circle.y - COORDS.circle.r + offsetY, 
+            drawWidth, 
+            drawHeight
         );
-        const x = COORDS.circle.x - (userImg.width * scale) / 2;
-        const y = COORDS.circle.y - (userImg.height * scale) / 2;
-        ctx.drawImage(userImg, x, y, userImg.width * scale, userImg.height * scale);
         ctx.restore();
 
         // 3. Draw White Border around Circle
